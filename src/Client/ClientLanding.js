@@ -5,7 +5,7 @@ class Client extends Component {
     super(props);
     this.state = {
       roomCode: '',
-      playerName: ''
+      playerName: '',
     }
     this.tryToJoin = this.tryToJoin.bind(this);
   }
@@ -17,7 +17,7 @@ class Client extends Component {
     socket.on('duplicatePlayerName', this.duplicatePlayerName);
     socket.on('joinCorrect', this.joinCorrect);
     socket.on('roomDeleted', this.roomDeleted);
-
+    socket.on('ping', this.ping);
     window.addEventListener('unload', this.windowUnload);
   }
 
@@ -36,8 +36,11 @@ class Client extends Component {
     alert(`wrong playerName = ${playerName}`)    
   }
 
-  joinCorrect = (data) => {
-    this.props.nextView();
+  joinCorrect = (playerName) => {
+    this.setState({
+      playerName
+    });
+    // this.props.nextView();
   }
 
   updateRoomCode(evt) {
@@ -55,7 +58,14 @@ class Client extends Component {
     alert('room deleted!');
     window.location.reload(true);
   }
-
+  ping = (startTime) => {
+    let latency = Date.now() - startTime;
+    this.setState({
+      ping: latency
+    });
+    console.log(latency, 'latency');
+    this.props.socket.emit('poing', latency, this.state.roomCode);
+  }
   windowUnload = () => {
     this.props.socket.emit('userDisconnect', this.state.roomCode);
   }

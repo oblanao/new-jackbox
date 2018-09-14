@@ -46,7 +46,6 @@ function Game(roomCode, socket) {
     return this.players.hasOwnProperty(playerName);
   }
   this.emitToServer = (event, data) => {
-    console.log(`emitToServer with args = event: ${event}, data: ${data}`)
     this.serverSocket.emit(event, data);
   }
   this.emitToAllClients = (event, data) => {
@@ -58,19 +57,19 @@ function Game(roomCode, socket) {
     this.players[clientName].socket.emit(event, data);
   }
   this.addClient = (socket, clientName) => {
-    console.log(`we are inside addClient`);
     this.players[clientName] = {
       name: clientName,
       socket
     }
+    // Emit ping
     // Emit to server that new user joined
     this.emitToServer('playerJoined', clientName);
     // Emit to client that joined, to change HTML
-    this.emitToClient(clientName, 'joinCorrect');
+    this.emitToClient(clientName, 'joinCorrect', clientName);
+    this.emitToClient(clientName, 'ping', Date.now());
   }
   this.removeClient = (socket) => {
     let playerName = this.getPlayerName(socket);
-    console.log(playerName);
     delete this.players[playerName];
     this.emitToServer('playerLeft', playerName);
   }

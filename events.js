@@ -34,6 +34,15 @@ const events = {
         game.removeClient(socket); // Will also emit to server that user left;
       }
     }
+  },
+  // event ping is probably reserved
+  poing: (socket, latency, roomCode) => {
+    let game = allGames[roomCode];
+    if (game) {
+      let playerName = game.getPlayerName(socket);
+      game.players[playerName].latency = latency;
+      console.log(game.players);
+    }
   }
 }
 

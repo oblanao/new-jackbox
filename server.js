@@ -2,7 +2,6 @@ const io = require('socket.io')();
 const { events } = require('./events');
 
 io.on('connection', (socket) => {
-
   socket.on('getRoomCode', () => {
     events.getRoomCode(socket)
   });
@@ -12,6 +11,10 @@ io.on('connection', (socket) => {
   socket.on('userDisconnect', (roomCode) => {
     events.userDisconnect(socket, roomCode);
   });
+  socket.on('poing', (latency, roomCode) => {
+    console.log('axax');
+    events.poing(socket, latency, roomCode);
+  })
 });
 
 io.listen(8000);
