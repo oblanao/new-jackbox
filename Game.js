@@ -31,8 +31,8 @@ function Game(roomCode, socket) {
   // Methods
   this.getPlayerName = (socket) => {
     for (player in this.players) {
-      if (this.players[player].socket && this.players[player].socket === socket) {
-        return player.playerName;
+      if (this.players[player].socket && this.players[player].socket.id === socket.id) {
+        return this.players[player].name;
       }
     }
     return false;
@@ -46,6 +46,7 @@ function Game(roomCode, socket) {
     return this.players.hasOwnProperty(playerName);
   }
   this.emitToServer = (event, data) => {
+    console.log(`emitToServer with args = event: ${event}, data: ${data}`)
     this.serverSocket.emit(event, data);
   }
   this.emitToAllClients = (event, data) => {
@@ -57,22 +58,21 @@ function Game(roomCode, socket) {
     this.players[clientName].socket.emit(event, data);
   }
   this.addClient = (socket, clientName) => {
+    console.log(`we are inside addClient`);
     this.players[clientName] = {
       name: clientName,
       socket
     }
     // Emit to server that new user joined
-    this.emitToServer('userJoined', clientName);
+    this.emitToServer('playerJoined', clientName);
     // Emit to client that joined, to change HTML
-    this.emitToClient(clientName, 'joinCorrect', {
-      playerName: clientName,
-      roomCode: this.roomCode,
-    });
+    this.emitToClient(clientName, 'joinCorrect');
   }
   this.removeClient = (socket) => {
     let playerName = this.getPlayerName(socket);
+    console.log(playerName);
     delete this.players[playerName];
-    this.emitToServer('userLeft', playerName);
+    this.emitToServer('playerLeft', playerName);
   }
   this.isServer = (socket) => socket === this.serverSocket
   this.destroy = () => {
