@@ -1,4 +1,4 @@
-const { allGames, Game, newRoomCode, roomCodeExists } = require('./Game');
+const { allGames, Game, newRoomCode, prettyPrint, roomCodeExists } = require('./Game');
 
 const events = {
   getRoomCode: (socket) => {
@@ -36,12 +36,12 @@ const events = {
     }
   },
   // event ping is probably reserved
-  poing: (socket, latency, roomCode) => {
+  goPong: (socket, latency, roomCode) => {
     let game = allGames[roomCode];
     if (game) {
       let playerName = game.getPlayerName(socket);
       game.players[playerName].latency = latency;
-      console.log(game.players);
+      prettyPrint(game.players);
     }
   }
 }

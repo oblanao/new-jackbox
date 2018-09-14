@@ -8,7 +8,7 @@ const roomCodeExists = (roomCode) => {
 
 const randomLetter = () => {
   let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  return alphabet[Math.floor(Math.random()*alphabet.length)];
+  return alphabet[Math.floor(Math.random() * alphabet.length)];
 }
 
 const newRoomCode = () => {
@@ -20,6 +20,45 @@ const newRoomCode = () => {
     }
   } while (roomCodeExists(roomCode))
   return roomCode;
+}
+
+const prettyPrint = (item) => {
+  if (typeof item === 'object') {
+    let objectPrint = Object.create(null);
+    let singleObject = false;
+    for (key in item) {
+      if (key === 'name') {
+        singleObject = true
+      }
+    }
+    if (singleObject) {
+      for (key in item) {
+        if (item.hasOwnProperty(key)) {
+          if (key === 'socket') {
+            objectPrint[key] = '[Socket Object]';
+          } else {
+            objectPrint[key] = item[key];
+          }
+        }
+      }
+    } else {
+      for (player in item) {
+        if (item.hasOwnProperty(player)) {
+          objectPrint[player] = Object.create(null);
+          for (key in item[player]) {
+            if (key === 'socket') {
+              objectPrint[player][key] = '[Socket Object]';
+            } else {
+              objectPrint[player][key] = item[player][key];
+            }
+          }
+        }
+      }
+    }
+    console.log(objectPrint);
+  } else {
+    return false;
+  }
 }
 
 // Game constructor
@@ -61,12 +100,12 @@ function Game(roomCode, socket) {
       name: clientName,
       socket
     }
-    // Emit ping
     // Emit to server that new user joined
     this.emitToServer('playerJoined', clientName);
     // Emit to client that joined, to change HTML
     this.emitToClient(clientName, 'joinCorrect', clientName);
-    this.emitToClient(clientName, 'ping', Date.now());
+    // Emit ping, event 'ping' is probably reserved (buggy)
+    this.emitToClient(clientName, 'goPing', Date.now());
   }
   this.removeClient = (socket) => {
     let playerName = this.getPlayerName(socket);
@@ -84,5 +123,6 @@ module.exports = {
   allGames,
   Game,
   newRoomCode,
-  roomCodeExists
+  roomCodeExists,
+  prettyPrint
 }

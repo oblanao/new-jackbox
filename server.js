@@ -11,9 +11,8 @@ io.on('connection', (socket) => {
   socket.on('userDisconnect', (roomCode) => {
     events.userDisconnect(socket, roomCode);
   });
-  socket.on('poing', (latency, roomCode) => {
-    console.log('axax');
-    events.poing(socket, latency, roomCode);
+  socket.on('goPong', (latency, roomCode) => {
+    events.goPong(socket, latency, roomCode);
   })
 });
 
