@@ -9,3 +9,28 @@
 .center {
   margin: 0 auto;
 }
+
+.divider {
+  width: 25px;
+  height: auto;
+  display: inline-block;
+}
+
+.main-header {
+  font-family: 'Ruslan Display', cursive;
+  font-size: 64px;
+}
+@media (max-width: 400px) {
+  .main-header {
+    font-size: 48px;
+  }
+}
+
+.center-items {
+  text-align: center;
+}
+
+.popout {
+  font-weight: bold;
+  border-bottom: 1px dotted blue;
+}

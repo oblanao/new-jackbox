@@ -55,12 +55,14 @@ class ServerLanding extends Component {
 
   render() {
     return (
-      <div className='server-landing'>
-        <p>Server</p>
-        <p>{this.state.roomCode}</p>
-        {this.state.players.map((player) => {
-          return <PlayerCard key={`player-${player}`} player={player} />
-        })}
+      <div className='center-items'>
+        <h1 className='main-header'>Jack or Whatever Box</h1>
+        <p>Join <span className='popout'>{this.state.roomCode}</span> and start playing!</p>
+        <div className='players-container'>
+          {this.state.players.map((player) => {
+            return <PlayerCard key={`player-${player}`} player={player} />
+          })}
+        </div>
       </div>
     )
   }
