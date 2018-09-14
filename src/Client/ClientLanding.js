@@ -36,11 +36,9 @@ class Client extends Component {
     alert(`wrong playerName = ${playerName}`)    
   }
 
-  joinCorrect = (playerName) => {
-    this.setState({
-      playerName
-    });
-    // this.props.nextView();
+  joinCorrect = () => {
+    this.props.setRoomCode(this.state.roomCode);
+    this.props.nextView();
   }
 
   updateRoomCode(evt) {

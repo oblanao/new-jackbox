@@ -98,18 +98,26 @@ function Game(roomCode, socket) {
   this.addClient = (socket, clientName) => {
     this.players[clientName] = {
       name: clientName,
-      socket
+      socket,
+      active: true,
+      stage: 0
     }
     // Emit to server that new user joined
     this.emitToServer('playerJoined', clientName);
     // Emit to client that joined, to change HTML
-    this.emitToClient(clientName, 'joinCorrect', clientName);
+    this.emitToClient(clientName, 'joinCorrect');
     // Emit ping, event 'ping' is probably reserved (buggy)
     this.emitToClient(clientName, 'goPing', Date.now());
   }
+  this.resumeClient = (socket, clientName) => {
+    this.players[clientName].active = true;
+    this.players[clientName].socket = socket;
+    this.emitToServer('playerJoined', clientName);
+    this.emitToClient(clientName, 'updateStage', this.players[clientName].stage);
+  }
   this.removeClient = (socket) => {
     let playerName = this.getPlayerName(socket);
-    delete this.players[playerName];
+    this.players[playerName].active = false;
     this.emitToServer('playerLeft', playerName);
   }
   this.isServer = (socket) => socket === this.serverSocket

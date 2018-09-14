@@ -13,7 +13,10 @@ io.on('connection', (socket) => {
   });
   socket.on('goPong', (latency, roomCode) => {
     events.goPong(socket, latency, roomCode);
-  })
+  });
+  socket.on('newStage', (data) => {
+    events.newStage(socket, data);
+  });
 });
 
 io.listen(8000);

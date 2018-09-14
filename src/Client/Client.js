@@ -20,24 +20,45 @@ class Client extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      roomCode: '',
       stage: 0,
-      view: <ClientLanding socket={socket} nextView={this.nextView} />
+      view: <ClientLanding socket={socket} nextView={this.nextView} setRoomCode={this.setRoomCode} />
     }
     this.nextView = this.nextView.bind(this);
+    this.setRoomCode = this.setRoomCode.bind(this);
   }
-
-  nextView = () => {
+  componentDidMount() {
+    socket.on('updateStage', (newStage) => {
+      this.nextView(newStage);
+    });
+  }
+  setRoomCode = (roomCode) => {
+    this.setState({
+      roomCode
+    });
+  }
+  nextView = (viewNr) => {
     const views = [
-      <ClientLanding socket={socket} nextView={this.nextView} />,
+      <ClientLanding socket={socket} nextView={this.nextView} setRoomCode={this.setRoomCode}/>,
       <ClientLoading socket={socket} nextView={this.nextView} />,
       <ClientPlay socket={socket} nextView={this.nextView} />
     ];
-    const newStage = this.state.stage + 1;
-    const newView = views[newStage];
-    this.setState({
-      stage: newStage,
-      view: newView
-    });
+    if (viewNr) {
+      let newStage = viewNr;
+      let newView = views[newStage];
+      this.setState({
+        stage: newStage,
+        view: newView
+      });
+    } else {
+      const newStage = this.state.stage + 1;
+      const newView = views[newStage];
+      this.setState({
+        stage: newStage,
+        view: newView
+      });
+      socket.emit('newStage', {roomCode: this.state.roomCode, newStage});
+    }
   }
 
   render() {

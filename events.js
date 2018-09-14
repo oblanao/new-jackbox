@@ -17,10 +17,15 @@ const events = {
     } else { // If game with roomcode exists
       var game = allGames[roomCode];
       if (game.playerExists(playerName)) {
-        socket.emit('duplicatePlayerName', (playerName));
+        if (game.players[playerName].active) {
+          socket.emit('duplicatePlayerName', (playerName));
+        } else {
+          game.resumeClient(socket, playerName);
+        }
       } else {
         // Add client to Room. This will also emit correct events to server and self
         game.addClient(socket, playerName);
+        game.players[playerName].stage++;
       }
     }
   },
@@ -43,6 +48,12 @@ const events = {
       game.players[playerName].latency = latency;
       prettyPrint(game.players);
     }
+  },
+  newStage: (socket, data) => {
+    let roomCode = data.roomCode;
+    let game = allGames[roomCode];
+    let playerName = game.getPlayerName(socket);
+    game.players[playerName].stage = data.newStage;
   }
 }
 
