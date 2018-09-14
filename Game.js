@@ -112,7 +112,7 @@ function Game(roomCode, socket) {
   this.resumeClient = (socket, clientName) => {
     this.players[clientName].active = true;
     this.players[clientName].socket = socket;
-    this.emitToServer('playerJoined', this.players[clientName]);
+    this.emitToServer('playerJoined', clientName);
     this.emitToClient(clientName, 'updateStage', this.players[clientName].stage);
   }
   this.removeClient = (socket) => {

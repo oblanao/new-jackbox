@@ -58,7 +58,7 @@ class ServerLanding extends Component {
       <div className='center-items'>
         <h1 className='main-header'>Jack or Whatever Box</h1>
         <p>Join <span className='popout'>{this.state.roomCode}</span> and start playing!</p>
-        <div className='players-container'>
+        <div className='container-player-cards'>
           {this.state.players.map((player) => {
             return <PlayerCard key={`player-${player}`} player={player} />
           })}

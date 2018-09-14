@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+
 class Client extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +28,7 @@ class Client extends Component {
     const socket = this.props.socket;
     const roomCode = this.state.roomCode;
     const playerName = this.state.playerName;
-    socket.emit('userTriesToJoin', ({roomCode, playerName}));
+    socket.emit('userTriesToJoin', ({ roomCode, playerName }));
   }
 
   wrongRoomCode = (roomCode) => {
@@ -33,7 +36,7 @@ class Client extends Component {
   }
 
   duplicatePlayerName = (playerName) => {
-    alert(`wrong playerName = ${playerName}`)    
+    alert(`wrong playerName = ${playerName}`)
   }
 
   joinCorrect = () => {
@@ -69,11 +72,25 @@ class Client extends Component {
   }
   render() {
     return (
-      <div>
-        <p>Client</p>
-        <input type="text" value={this.state.inputValue} onChange={evt => this.updateRoomCode(evt)} />
-        <input type="text" value={this.state.playerName} onChange={evt => this.updatePlayerName(evt)} />
-        <button onClick={this.tryToJoin}>Submit!</button>
+      <div className='client-landing'>
+        <h1 className='main-header'>Jack or Whatever Box</h1>
+        <Input
+          placeholder="ROOMCODE"
+          value={this.state.roomCode}
+          onChange={evt => this.updateRoomCode(evt)}
+        />
+        <br/>
+        <Input
+          placeholder="NAME"
+          value={this.state.playerName}
+          onChange={evt => this.updatePlayerName(evt)}
+        />
+        <br/>
+        <Button 
+          onClick={this.tryToJoin}
+          variant={'outlined'}>
+        Submit!
+        </Button>
       </div>
     )
   }

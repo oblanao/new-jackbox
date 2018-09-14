@@ -63,7 +63,7 @@ class Client extends Component {
 
   render() {
     return (
-      <div className='max-flex-all-center'>
+      <div className='max-flex-center-h'>
         {this.state.view}
       </div>
     )

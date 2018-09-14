@@ -5,6 +5,16 @@
   min-height: 100vh;
   min-width: 100vw;
 }
+.max-flex-center-h {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.max {
+  min-height: 100vh;
+  min-width: 100vw;
+}
 
 .center {
   margin: 0 auto;
@@ -20,11 +30,6 @@
   font-family: 'Ruslan Display', cursive;
   font-size: 64px;
 }
-@media (max-width: 400px) {
-  .main-header {
-    font-size: 48px;
-  }
-}
 
 .center-items {
   text-align: center;
@@ -33,4 +38,30 @@
 .popout {
   font-weight: bold;
   border-bottom: 1px dotted blue;
+}
+.container-player-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.player-card {
+  text-align: center;
+  padding:5px;
+  margin: 5px;
+}
+
+.player-card>img {
+  max-height: 150px;
+  width: auto;
+}
+
+.client-landing {
+  text-align: center;
+}
+
+.client-landing>input {
+  margin-bottom: 10px;
+}
+.client-landing>button {
+  margin-top:10px;
 }
